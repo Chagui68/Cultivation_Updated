@@ -3,10 +3,8 @@ package dev.sefiraat.cultivation.api.slimefun.items.plants;
 import dev.sefiraat.cultivation.api.slimefun.plant.Growth;
 import dev.sefiraat.cultivation.api.slimefun.plant.PlantTheme;
 import dev.sefiraat.cultivation.implementation.utils.Keys;
-import io.github.bakedlibs.dough.skins.PlayerHead;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
-import io.papermc.lib.PaperLib;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -36,8 +34,24 @@ public class NothingPlant extends CultivationPlant {
         if (growthStage == 0) {
             PlantTheme theme = growth.getTheme();
             if (theme != null) {
-                PlayerHead.setSkin(block, theme.getSeed().getPlayerSkin(), false);
-                PaperLib.getBlockState(block, false).getState().update(true, false);
+                // Use native Bukkit API instead of PlayerHead.setSkin() which doesn't work in
+                // 1.20.6
+                org.bukkit.block.Skull skull = (org.bukkit.block.Skull) block.getState();
+                org.bukkit.profile.PlayerProfile profile = org.bukkit.Bukkit
+                        .createPlayerProfile(java.util.UUID.randomUUID());
+                org.bukkit.profile.PlayerTextures textures = profile.getTextures();
+
+                try {
+                    // Convert hash to texture URL
+                    String hash = theme.getSeed().getHash();
+                    java.net.URL url = new java.net.URL("http://textures.minecraft.net/texture/" + hash);
+                    textures.setSkin(url);
+                    profile.setTextures(textures);
+                    skull.setOwnerProfile(profile);
+                    skull.update(true, false);
+                } catch (java.net.MalformedURLException e) {
+                    e.printStackTrace();
+                }
                 BlockStorage.addBlockInfo(block, Keys.FLORA_GROWTH_STAGE, String.valueOf(growthStage));
                 growthDisplay(block.getLocation());
             }

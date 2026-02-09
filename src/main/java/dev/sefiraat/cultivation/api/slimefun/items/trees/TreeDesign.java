@@ -6,7 +6,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.stream.JsonReader;
 import dev.sefiraat.cultivation.Cultivation;
-import io.github.bakedlibs.dough.skins.PlayerHead;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Axis;
@@ -146,14 +145,31 @@ public enum TreeDesign {
 
     @ParametersAreNullableByDefault
     private void applyBlock(@Nonnull CultivationTree tree,
-                            @Nonnull ItemStack itemStack,
-                            BlockFace face,
-                            Axis axis,
-                            @Nonnull Block block
-    ) {
+            @Nonnull ItemStack itemStack,
+            BlockFace face,
+            Axis axis,
+            @Nonnull Block block) {
         if (itemStack.getType() == Material.PLAYER_HEAD) {
             block.setType(face != null ? Material.PLAYER_WALL_HEAD : Material.PLAYER_HEAD, true);
-            PlayerHead.setSkin(block, tree.getSkin().getPlayerSkin(), true);
+
+            // Use native Bukkit API instead of PlayerHead.setSkin() which doesn't work in
+            // 1.20.6
+            org.bukkit.block.Skull skull = (org.bukkit.block.Skull) block.getState();
+            org.bukkit.profile.PlayerProfile profile = org.bukkit.Bukkit
+                    .createPlayerProfile(java.util.UUID.randomUUID());
+            org.bukkit.profile.PlayerTextures textures = profile.getTextures();
+
+            try {
+                // Convert hash to texture URL
+                String hash = tree.getSkin().getHash();
+                java.net.URL url = new java.net.URL("http://textures.minecraft.net/texture/" + hash);
+                textures.setSkin(url);
+                profile.setTextures(textures);
+                skull.setOwnerProfile(profile);
+                skull.update(true, false);
+            } catch (java.net.MalformedURLException e) {
+                e.printStackTrace();
+            }
         } else {
             block.setType(itemStack.getType(), true);
             if (Tag.LEAVES.isTagged(itemStack.getType())) {
