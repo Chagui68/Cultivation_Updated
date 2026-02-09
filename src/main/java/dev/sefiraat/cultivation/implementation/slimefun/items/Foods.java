@@ -59,7 +59,7 @@ public final class Foods {
         player -> simplePlayerEffect(
             player,
             10,
-            new Pair<>(PotionEffectType.INCREASE_DAMAGE, 2)
+            new Pair<>(PotionEffectType.STRENGTH, 2)
         )
     ).buildRegister(Cultivation.getInstance());
 
@@ -74,7 +74,7 @@ public final class Foods {
         player -> simplePlayerEffect(
             player,
             4,
-            new Pair<>(PotionEffectType.INCREASE_DAMAGE, 0),
+            new Pair<>(PotionEffectType.STRENGTH, 0),
             new Pair<>(PotionEffectType.SPEED, 0)
         )
     ).buildRegister(Cultivation.getInstance());
@@ -138,7 +138,7 @@ public final class Foods {
             if (Chance.testChance(0.33)) {
                 player.damage(999);
             } else {
-                simplePlayerEffect(player, 2, new Pair<>(PotionEffectType.INCREASE_DAMAGE, 4));
+                simplePlayerEffect(player, 2, new Pair<>(PotionEffectType.STRENGTH, 4));
             }
         }
     ).buildRegister(Cultivation.getInstance());
@@ -184,7 +184,7 @@ public final class Foods {
         player -> simplePlayerEffect(
             player,
             20,
-            new Pair<>(PotionEffectType.JUMP, 1),
+            new Pair<>(PotionEffectType.JUMP_BOOST, 1),
             new Pair<>(PotionEffectType.SATURATION, 0)
         )
     ).buildRegister(Cultivation.getInstance());
@@ -217,7 +217,7 @@ public final class Foods {
             player,
             2,
             new Pair<>(PotionEffectType.FIRE_RESISTANCE, 1),
-            new Pair<>(PotionEffectType.DAMAGE_RESISTANCE, 2)
+            new Pair<>(PotionEffectType.RESISTANCE, 2)
         )
     ).buildRegister(Cultivation.getInstance());
 
@@ -243,7 +243,7 @@ public final class Foods {
         player -> simplePlayerEffect(
             player,
             12,
-            new Pair<>(PotionEffectType.FAST_DIGGING, 3)
+            new Pair<>(PotionEffectType.HASTE, 3)
         )
     ).buildRegister(Cultivation.getInstance());
 
@@ -307,9 +307,9 @@ public final class Foods {
             simplePlayerEffect(
                 player,
                 0,
-                new Pair<>(PotionEffectType.SLOW_DIGGING, 9),
-                new Pair<>(PotionEffectType.SLOW, 5),
-                new Pair<>(PotionEffectType.INCREASE_DAMAGE, 9)
+                new Pair<>(PotionEffectType.MINING_FATIGUE, 9),
+                new Pair<>(PotionEffectType.SLOWNESS, 5),
+                new Pair<>(PotionEffectType.STRENGTH, 9)
             );
             player.setHealth(1);
         }
@@ -396,7 +396,7 @@ public final class Foods {
                 player,
                 0,
                 new Pair<>(PotionEffectType.REGENERATION, 1),
-                new Pair<>(PotionEffectType.DAMAGE_RESISTANCE, 1)
+                new Pair<>(PotionEffectType.RESISTANCE, 1)
             );
             simplePlayerEffect(player, 999);
         }
@@ -443,7 +443,7 @@ public final class Foods {
             Products.TOMATO.getBlendedItem(), Products.TOMATO.getBlendedItem(), Products.TOMATO.getBlendedItem(),
             Ingredients.DOUGH.getItem(), Ingredients.DOUGH.getItem(), Ingredients.DOUGH.getItem()
         },
-        player -> simplePlayerEffect(player, 8, new Pair<>(PotionEffectType.SLOW, 0))
+        player -> simplePlayerEffect(player, 8, new Pair<>(PotionEffectType.SLOWNESS, 0))
     ).buildRegister(Cultivation.getInstance());
 
     public static final Food PIZZA_MUSHROOM = new Food(
@@ -457,8 +457,8 @@ public final class Foods {
         player -> simplePlayerEffect(
             player,
             12,
-            new Pair<>(PotionEffectType.SLOW, 0),
-            new Pair<>(PotionEffectType.FAST_DIGGING, 1)
+            new Pair<>(PotionEffectType.SLOWNESS, 0),
+            new Pair<>(PotionEffectType.MINING_FATIGUE, 1)
         )
     ).buildRegister(Cultivation.getInstance());
 
@@ -474,8 +474,8 @@ public final class Foods {
             player,
             12,
             new Pair<>(PotionEffectType.SPEED, 0),
-            new Pair<>(PotionEffectType.FAST_DIGGING, 0),
-            new Pair<>(PotionEffectType.JUMP, 0)
+            new Pair<>(PotionEffectType.HASTE, 0),
+            new Pair<>(PotionEffectType.JUMP_BOOST, 0)
         )
     ).buildRegister(Cultivation.getInstance());
 
@@ -690,9 +690,9 @@ public final class Foods {
         },
         player -> simplePlayerEffect(player, 999,
                                      new Pair<>(PotionEffectType.HEALTH_BOOST, 3),
-                                     new Pair<>(PotionEffectType.DAMAGE_RESISTANCE, 2),
-                                     new Pair<>(PotionEffectType.FAST_DIGGING, 1),
-                                     new Pair<>(PotionEffectType.SLOW, 1)
+                                     new Pair<>(PotionEffectType.RESISTANCE, 2),
+                                     new Pair<>(PotionEffectType.HASTE, 1),
+                                     new Pair<>(PotionEffectType.SLOWNESS, 1)
         )
     ).buildRegister(Cultivation.getInstance());
 

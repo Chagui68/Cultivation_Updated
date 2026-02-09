@@ -54,19 +54,19 @@ import java.util.UUID;
 import java.util.concurrent.ThreadLocalRandom;
 
 /**
- * This class is used to define a CultivationPlant that will grow as a {@link CultivationFlora}
+ * This class is used to define a CultivationPlant that will grow as a
+ * {@link CultivationFlora}
  */
 public abstract class CultivationPlant extends CultivationFloraItem<CultivationPlant>
-    implements CultivationFlora, CultivationLevelProfileHolder, CultivationCroppable, CultivationPlantHolder,
-               DisplayInteractable {
+        implements CultivationFlora, CultivationLevelProfileHolder, CultivationCroppable, CultivationPlantHolder,
+        DisplayInteractable {
 
     @Nonnull
     public static final Set<BlockFace> BREEDING_DIRECTIONS = Set.of(
-        BlockFace.NORTH,
-        BlockFace.SOUTH,
-        BlockFace.EAST,
-        BlockFace.WEST
-    );
+            BlockFace.NORTH,
+            BlockFace.SOUTH,
+            BlockFace.EAST,
+            BlockFace.WEST);
 
     @Nonnull
     protected Set<BreedingPair> breedingPairs = new HashSet<>();
@@ -78,20 +78,18 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
 
     @ParametersAreNonnullByDefault
     protected CultivationPlant(SlimefunItemStack item,
-                               RecipeType recipeType,
-                               ItemStack[] recipe,
-                               Growth growth
-    ) {
+            RecipeType recipeType,
+            ItemStack[] recipe,
+            Growth growth) {
         this(item, recipeType, recipe, growth, null);
     }
 
     @ParametersAreNonnullByDefault
     protected CultivationPlant(SlimefunItemStack item,
-                               RecipeType recipeType,
-                               ItemStack[] recipe,
-                               Growth growth,
-                               @Nullable ItemStack recipeOutput
-    ) {
+            RecipeType recipeType,
+            ItemStack[] recipe,
+            Growth growth,
+            @Nullable ItemStack recipeOutput) {
         super(CultivationGroups.PLANTS, item, recipeType, recipe, recipeOutput, growth);
     }
 
@@ -99,14 +97,14 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
     public void preRegister() {
         super.preRegister();
         addItemHandler(
-            new BlockBreakHandler(false, false) {
-                @Override
-                @ParametersAreNonnullByDefault
-                public void onPlayerBreak(BlockBreakEvent blockBreakEvent, ItemStack itemStack, List<ItemStack> list) {
-                    onBreak(blockBreakEvent);
-                }
-            }
-        );
+                new BlockBreakHandler(false, false) {
+                    @Override
+                    @ParametersAreNonnullByDefault
+                    public void onPlayerBreak(BlockBreakEvent blockBreakEvent, ItemStack itemStack,
+                            List<ItemStack> list) {
+                        onBreak(blockBreakEvent);
+                    }
+                });
     }
 
     @Override
@@ -141,11 +139,10 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
         ItemMeta itemMeta = itemStack.getItemMeta();
 
         FloraLevelProfile profile = PersistentDataAPI.get(
-            itemMeta,
-            FloraLevelProfileDataType.KEY,
-            FloraLevelProfileDataType.TYPE,
-            new FloraLevelProfile(1, 1, 1, false)
-        );
+                itemMeta,
+                FloraLevelProfileDataType.KEY,
+                FloraLevelProfileDataType.TYPE,
+                new FloraLevelProfile(1, 1, 1, false));
 
         setLevelProfile(location, profile);
         PROFILE_MAP.put(location, profile);
@@ -183,24 +180,23 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
 
     @ParametersAreNonnullByDefault
     private void testBreed(CultivationPlant mother,
-                           CultivationPlant mate,
-                           Block middleBlock,
-                           Block motherBlock,
-                           Block fatherBlock
-    ) {
+            CultivationPlant mate,
+            Block middleBlock,
+            Block motherBlock,
+            Block fatherBlock) {
         BreedResult result = Registry.getInstance().getBreedResult(mother.getId(), mate.getId());
 
         if (!isMature(motherBlock)
-            || !isMature(fatherBlock)
-            || !isCrossCropped(motherBlock)
-            || !isCrossCropped(fatherBlock)
-        ) {
+                || !isMature(fatherBlock)
+                || !isCrossCropped(motherBlock)
+                || !isCrossCropped(fatherBlock)) {
             return;
         }
 
         switch (result.getResultType()) {
             case NO_PAIRS ->
-                // No matching breeding pairs, lets feedback to the player then move to the next direction
+                // No matching breeding pairs, lets feedback to the player then move to the next
+                // direction
                 breedInvalidDisplay(middleBlock.getLocation());
             case SUCCESS -> {
                 // Breed was a success - spawn child, log discovery
@@ -226,11 +222,10 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
 
     private void breedInvalidDisplay(@Nonnull Location location) {
         ParticleUtils.displayParticleRandomly(
-            LocationUtils.centre(location),
-            0.5,
-            2,
-            new Particle.DustOptions(Color.BLACK, 1)
-        );
+                LocationUtils.centre(location),
+                0.5,
+                2,
+                new Particle.DustOptions(Color.BLACK, 1));
     }
 
     @ParametersAreNonnullByDefault
@@ -260,7 +255,11 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
     }
 
     protected void breedSuccess(@Nonnull Location location) {
-        ParticleUtils.displayParticleRandomly(LocationUtils.centre(location), Particle.SLIME, 0.5, 4);
+        ParticleUtils.displayParticleRandomly(
+                LocationUtils.centre(location),
+                0.5,
+                4,
+                new Particle.DustOptions(org.bukkit.Color.LIME, 1));
     }
 
     /**
@@ -306,11 +305,10 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
         ItemMeta itemMeta = itemToDrop.getItemMeta();
 
         PersistentDataAPI.set(
-            itemMeta,
-            FloraLevelProfileDataType.KEY,
-            FloraLevelProfileDataType.TYPE,
-            profile
-        );
+                itemMeta,
+                FloraLevelProfileDataType.KEY,
+                FloraLevelProfileDataType.TYPE,
+                profile);
 
         if (profile.isAnalyzed()) {
             List<String> lore = itemMeta.getLore();
