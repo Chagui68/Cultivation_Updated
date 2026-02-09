@@ -6,7 +6,7 @@
 
     <groupId>dev.sefiraat</groupId>
     <artifactId>Cultivation</artifactId>
-    <version>2.0.0</version>
+    <version>2.2.0</version>
 
     <name>Cultivation</name>
     <description>A Slimefun Addon that adds a plethora of Magical and non-magical flora.</description>
@@ -121,7 +121,7 @@
         <sonar.organization>sefiraat</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
 
-        <sonar.issue.ignore.multicriteria>e1,e2,e3</sonar.issue.ignore.multicriteria>
+        <sonar.issue.ignore.multicriteria>e1,e2,e3,e4</sonar.issue.ignore.multicriteria>
         <sonar.issue.ignore.multicriteria.e1.ruleKey>java:S6212</sonar.issue.ignore.multicriteria.e1.ruleKey>
         <sonar.issue.ignore.multicriteria.e1.resourceKey>**</sonar.issue.ignore.multicriteria.e1.resourceKey>
 
@@ -131,8 +131,8 @@
         <sonar.issue.ignore.multicriteria.e3.ruleKey>java:S2245</sonar.issue.ignore.multicriteria.e3.ruleKey>
         <sonar.issue.ignore.multicriteria.e3.resourceKey>**</sonar.issue.ignore.multicriteria.e3.resourceKey>
 
-        <sonar.issue.ignore.multicriteria.e3.ruleKey>java:S6206</sonar.issue.ignore.multicriteria.e3.ruleKey>
-        <sonar.issue.ignore.multicriteria.e3.resourceKey>**</sonar.issue.ignore.multicriteria.e3.resourceKey>
+        <sonar.issue.ignore.multicriteria.e4.ruleKey>java:S6206</sonar.issue.ignore.multicriteria.e4.ruleKey>
+        <sonar.issue.ignore.multicriteria.e4.resourceKey>**</sonar.issue.ignore.multicriteria.e4.resourceKey>
     </properties>
 
     <distributionManagement>

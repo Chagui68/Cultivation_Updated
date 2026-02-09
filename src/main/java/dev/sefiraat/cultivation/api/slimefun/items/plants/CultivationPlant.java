@@ -22,13 +22,11 @@ import dev.sefiraat.sefilib.misc.ParticleUtils;
 import dev.sefiraat.sefilib.string.Theme;
 import dev.sefiraat.sefilib.world.LocationUtils;
 import io.github.bakedlibs.dough.data.persistent.PersistentDataAPI;
-import io.github.bakedlibs.dough.skins.PlayerHead;
 import io.github.thebusybiscuit.slimefun4.api.SlimefunAddon;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItem;
 import io.github.thebusybiscuit.slimefun4.api.items.SlimefunItemStack;
 import io.github.thebusybiscuit.slimefun4.api.recipes.RecipeType;
 import io.github.thebusybiscuit.slimefun4.core.handlers.BlockBreakHandler;
-import io.papermc.lib.PaperLib;
 import me.mrCookieSlime.CSCoreLibPlugin.Configuration.Config;
 import me.mrCookieSlime.Slimefun.api.BlockStorage;
 import org.bukkit.Color;
@@ -239,8 +237,24 @@ public abstract class CultivationPlant extends CultivationFloraItem<CultivationP
         UUID owner = getOwner(motherLocation);
 
         cloneBlock.setType(Material.PLAYER_HEAD);
-        PlayerHead.setSkin(cloneBlock, theme.getSeed().getPlayerSkin(), false);
-        PaperLib.getBlockState(cloneBlock, false).getState().update(true, false);
+
+        // Use native Bukkit API instead of PlayerHead.setSkin() which doesn't work in
+        // 1.20.6
+        org.bukkit.block.Skull skull = (org.bukkit.block.Skull) cloneBlock.getState();
+        org.bukkit.profile.PlayerProfile profile = org.bukkit.Bukkit.createPlayerProfile(java.util.UUID.randomUUID());
+        org.bukkit.profile.PlayerTextures textures = profile.getTextures();
+
+        try {
+            // Convert hash to texture URL
+            String hash = theme.getSeed().getHash();
+            java.net.URL url = new java.net.URL("http://textures.minecraft.net/texture/" + hash);
+            textures.setSkin(url);
+            profile.setTextures(textures);
+            skull.setOwnerProfile(profile);
+            skull.update(true, false);
+        } catch (java.net.MalformedURLException e) {
+            e.printStackTrace();
+        }
         BlockStorage.store(cloneBlock, childSeed.getId());
         BlockStorage.addBlockInfo(cloneBlock, Keys.FLORA_GROWTH_STAGE, "0");
         BlockStorage.addBlockInfo(cloneBlock, Keys.FLORA_OWNER, owner.toString());
