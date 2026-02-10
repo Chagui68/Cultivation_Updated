@@ -1,13 +1,21 @@
 package dev.sefiraat.cultivation.api.utils;
 
-import io.github.bakedlibs.dough.skins.PlayerHead;
 import io.github.bakedlibs.dough.skins.PlayerSkin;
+import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.SkullMeta;
+import org.bukkit.profile.PlayerProfile;
+import org.bukkit.profile.PlayerTextures;
 
 import javax.annotation.Nonnull;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.UUID;
 
 /**
- * This enum contains hashes for the skulls used in the addon with Methods for generating ItemStacks/Skins
+ * This enum contains hashes for the skulls used in the addon with Methods for
+ * generating ItemStacks/Skins
  */
 public enum Skins {
     // region Seeds
@@ -555,7 +563,6 @@ public enum Skins {
 
     // endregion
 
-
     @Nonnull
     private static final Skins[] CACHED_VALUES = values();
 
@@ -576,7 +583,21 @@ public enum Skins {
 
     @Nonnull
     public ItemStack getPlayerHead() {
-        return PlayerHead.getItemStack(playerSkin);
+        ItemStack skull = new ItemStack(Material.PLAYER_HEAD);
+        SkullMeta meta = (SkullMeta) skull.getItemMeta();
+        if (meta != null) {
+            PlayerProfile profile = Bukkit.createPlayerProfile(UUID.randomUUID());
+            PlayerTextures textures = profile.getTextures();
+            try {
+                textures.setSkin(new URL("http://textures.minecraft.net/texture/" + hash));
+            } catch (MalformedURLException e) {
+                e.printStackTrace();
+            }
+            profile.setTextures(textures);
+            meta.setOwnerProfile(profile);
+            skull.setItemMeta(meta);
+        }
+        return skull;
     }
 
     @Nonnull
