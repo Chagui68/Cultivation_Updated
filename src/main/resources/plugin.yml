@@ -1,10 +1,11 @@
 name: Cultivation
 author: Sefiraat, J3fftw, JustAHuman, Chagui68
-description: A Spiritual Successor to ExoticGarden
+description: A Spiritual Successor to ExoticGarden with support for Paper, Purpur and Folia.
 main: dev.sefiraat.cultivation.Cultivation
 website: https://github.com/Chagui68/Cultivation_Updated
 version: ${project.version}
 api-version: 1.20
+folia-supported: true
 depend:
   - Slimefun
 commands:
